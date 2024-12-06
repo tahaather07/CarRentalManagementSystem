@@ -1,0 +1,261 @@
+{
+  "info": {
+    "_postman_id": "random-uuid",
+    "name": "Car Rental Management System",
+    "description": "API collection for Car Rental Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Staff Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"staff@example.com\",\n    \"password\": \"staff123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Login for staff members"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Staff - Bookings",
+      "item": [
+        {
+          "name": "Get All Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/staff/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "staff", "bookings"]
+            }
+          }
+        },
+        {
+          "name": "Update Booking Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"confirmed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/staff/bookings/:bookingId/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "staff", "bookings", ":bookingId", "status"],
+              "variable": [
+                {
+                  "key": "bookingId",
+                  "value": "booking-id-here"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Staff - Inspections",
+      "item": [
+        {
+          "name": "Create Inspection",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "booking",
+                  "value": "booking-id-here",
+                  "type": "text"
+                },
+                {
+                  "key": "type",
+                  "value": "pre-rental",
+                  "type": "text"
+                },
+                {
+                  "key": "condition[exterior]",
+                  "value": "Good condition",
+                  "type": "text"
+                },
+                {
+                  "key": "condition[interior]",
+                  "value": "Clean",
+                  "type": "text"
+                },
+                {
+                  "key": "condition[mileage]",
+                  "value": "50000",
+                  "type": "text"
+                },
+                {
+                  "key": "condition[fuelLevel]",
+                  "value": "0.75",
+                  "type": "text"
+                },
+                {
+                  "key": "notes",
+                  "value": "Regular inspection",
+                  "type": "text"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/staff/inspections",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "staff", "inspections"]
+            }
+          }
+        },
+        {
+          "name": "Get Inspections",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/staff/inspections/:bookingId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "staff", "inspections", ":bookingId"],
+              "variable": [
+                {
+                  "key": "bookingId",
+                  "value": "booking-id-here"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Staff - Payments",
+      "item": [
+        {
+          "name": "Process Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bookingId\": \"booking-id-here\",\n    \"amount\": 100.00,\n    \"paymentMethod\": \"cash\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/staff/payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "staff", "payments"]
+            }
+          }
+        },
+        {
+          "name": "Get Payment Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/staff/payments/:bookingId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "staff", "payments", ":bookingId"],
+              "variable": [
+                {
+                  "key": "bookingId",
+                  "value": "booking-id-here"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "your-jwt-token-here",
+      "type": "string"
+    }
+  ]
+}
