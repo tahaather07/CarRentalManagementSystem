@@ -1,11 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const connectDatabase = require('../src/config/database');
-const seedDatabase = require('../src/config/seedData');
-const staffRoutes = require('../src/routes/staffRoutes');
-const authRoutes = require('../src/routes/authRoutes');
-const authController = require('../src/controllers/authController');
+const connectDatabase = require('./src/config/database');
+const seedDatabase = require('./src/config/seedData');
+const staffRoutes = require('./src/routes/staffRoutes');
+const authRoutes = require('./src/routes/authRoutes');
+const authController = require('./src/controllers/authController');
 
 const app = express();
 
@@ -34,5 +34,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// Export the app as a serverless function
-module.exports = app;
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
