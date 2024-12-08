@@ -72,14 +72,14 @@ function Dashboard() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+    <div className="p-2 md:p-6">
+      <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Dashboard</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
         <StatCard 
           title="Total Cars" 
           value={stats.totalCars}
-          icon="��"
+          icon="🚗"
         />
         <StatCard 
           title="Active Staff" 
@@ -98,8 +98,14 @@ function Dashboard() {
         />
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <Line data={chartData} options={chartOptions} />
+      <div className="bg-white p-3 md:p-6 rounded-lg shadow-md">
+        <div className="h-[300px] md:h-[400px]">
+          <Line data={chartData} options={{
+            ...chartOptions,
+            maintainAspectRatio: false,
+            responsive: true
+          }} />
+        </div>
       </div>
     </div>
   );

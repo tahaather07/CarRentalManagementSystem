@@ -129,7 +129,7 @@ function InspectionForm({ booking, onSubmit, onCancel }) {
               multiple
               accept="image/*"
               onChange={handleImageUpload}
-              className="border rounded-md p-2"
+              className="border rounded-md p-2 w-full"
             />
           </div>
 
@@ -257,12 +257,12 @@ function Inspections() {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Vehicle Inspections</h1>
+    <div className="p-2 md:p-6">
+      <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Vehicle Inspections</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-1">
-          <div className="bg-white p-4 rounded-lg shadow-md">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="lg:col-span-1">
+          <div className="bg-white p-3 md:p-4 rounded-lg shadow-md">
             <h2 className="font-semibold mb-4">Select Booking</h2>
             <select
               className="w-full border rounded-md p-2"
@@ -288,7 +288,7 @@ function Inspections() {
           </div>
         </div>
 
-        <div className="md:col-span-2">
+        <div className="lg:col-span-2">
           {showForm && selectedBooking ? (
             <InspectionForm
               booking={selectedBooking}
@@ -296,7 +296,9 @@ function Inspections() {
               onCancel={() => setShowForm(false)}
             />
           ) : (
-            <InspectionList inspections={inspections} />
+            <div className="overflow-x-auto">
+              <InspectionList inspections={inspections} />
+            </div>
           )}
         </div>
       </div>

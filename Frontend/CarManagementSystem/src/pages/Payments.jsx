@@ -233,13 +233,13 @@ function Payments() {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Payment Management</h1>
+    <div className="p-2 md:p-6">
+      <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Payment Management</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-1">
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <h2 className="font-semibold mb-4">Select Booking</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="lg:col-span-1">
+          <div className="bg-white p-3 md:p-4 rounded-lg shadow-md">
+            <h2 className="font-semibold mb-3 md:mb-4">Select Booking</h2>
             <select
               className="w-full border rounded-md p-2"
               onChange={(e) => handleBookingSelect(e.target.value)}
@@ -265,7 +265,7 @@ function Payments() {
           </div>
         </div>
 
-        <div className="md:col-span-2">
+        <div className="lg:col-span-2">
           {showForm && selectedBooking ? (
             <PaymentForm
               booking={selectedBooking}
@@ -273,7 +273,9 @@ function Payments() {
               onCancel={() => setShowForm(false)}
             />
           ) : (
-            <PaymentHistory payments={payments} />
+            <div className="overflow-x-auto">
+              <PaymentHistory payments={payments} />
+            </div>
           )}
         </div>
       </div>
