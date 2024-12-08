@@ -9,6 +9,12 @@ const authController = require('./src/controllers/authController');
 
 const app = express();
 
+// Middleware to log incoming requests
+app.use((req, res, next) => {
+  console.log(`${req.method} request made to: ${req.url}`);
+  next(); // Pass control to the next middleware or route handler
+});
+
 // Middleware
 app.use(cors({
   origin: '*', // Allow all origins
