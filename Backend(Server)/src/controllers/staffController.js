@@ -2,6 +2,7 @@ const Booking = require('../models/Booking');
 const Inspection = require('../models/Inspection');
 const Payment = require('../models/Payment');
 const User = require('../models/User');
+const emailService = require('../utils/emailService');
 
 const staffController = {
   // Get bookings for staff's branch
@@ -134,6 +135,14 @@ const staffController = {
     try {
       const { bookingId, amount, paymentMethod } = req.body;
       
+      // Get booking details first to access customer information
+      const booking = await Booking.findById(bookingId)
+        .populate('customer', 'email');
+      
+      if (!booking) {
+        return res.status(404).json({ error: 'Booking not found' });
+      }
+
       const payment = new Payment({
         booking: bookingId,
         amount,
@@ -145,9 +154,20 @@ const staffController = {
       await payment.save();
 
       // Update booking payment status
-      await Booking.findByIdAndUpdate(bookingId, {
-        paymentStatus: 'paid'
-      });
+      booking.paymentStatus = 'paid';
+      await booking.save();
+
+      // Send payment confirmation email
+      try {
+        await emailService.sendPaymentConfirmation(
+          booking,
+          payment,
+          booking.customer.email
+        );
+      } catch (emailError) {
+        console.error('Failed to send payment confirmation email:', emailError);
+      
+      }
 
       res.status(201).json(payment);
     } catch (error) {

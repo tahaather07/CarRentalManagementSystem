@@ -65,11 +65,11 @@ const seedDatabase = async () => {
     // Create sample customer
     const hashedPassword = await bcrypt.hash('customer123', 10);
     const customer = await User.findOneAndUpdate(
-      { email: 'customer@example.com' },
+      { email: 'tahaawan20@hotmail.com' },
       {
         firstName: 'John',
         lastName: 'Doe',
-        email: 'customer@example.com',
+        email: 'tahaawan20@hotmail.com',
         password: hashedPassword,
         phoneNumber: '555-0124',
         role: 'customer',
@@ -153,11 +153,11 @@ const seedDatabase = async () => {
     // Create second sample customer
     const hashedPassword2 = await bcrypt.hash('customer456', 10);
     const customer2 = await User.findOneAndUpdate(
-      { email: 'jane.smith@example.com' },
+      { email: 'tahaathar3@hotmai.co.uk' },
       {
         firstName: 'Jane',
         lastName: 'Smith',
-        email: 'jane.smith@example.com',
+        email: 'tahaathar3@hotmai.co.uk',
         password: hashedPassword2,
         phoneNumber: '555-0125',
         role: 'customer',
@@ -166,7 +166,7 @@ const seedDatabase = async () => {
       { upsert: true, new: true }
     );
 
-    // Create second sample booking
+    
     const booking2 = await Booking.findOneAndUpdate(
       { 
         customer: customer2._id,

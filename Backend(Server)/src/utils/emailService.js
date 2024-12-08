@@ -1,9 +1,8 @@
 const nodemailer = require('nodemailer');
-const { paymentConfirmationTemplate } = require('./emailTemplates');
 
 // Create transporter
 const transporter = nodemailer.createTransport({
-  service: process.env.EMAIL_SERVICE, // e.g., 'gmail'
+  service: process.env.EMAIL_SERVICE,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD
@@ -17,7 +16,7 @@ const emailService = {
         from: process.env.EMAIL_USER,
         to: customerEmail,
         subject: 'Payment Confirmation - Car Rental',
-        html: paymentConfirmationTemplate(booking, payment)
+        text: `Your payment for booking #${booking._id} has been verified. Amount paid: $${payment.amount}`
       };
 
       await transporter.sendMail(mailOptions);
