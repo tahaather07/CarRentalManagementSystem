@@ -1,26 +1,58 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Bookings from './pages/Bookings';
+import Login from './pages/Login';
 import Inspections from './pages/Inspections';
 import Payments from './pages/Payments';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 md:ml-64">
-        <main className="p-4">
-          <Switch>
-            <Route path="/dashboard" component={Dashboard} />
-            <Route path="/bookings" component={Bookings} />
-            <Route path="/inspections" component={Inspections} />
-            <Route path="/payments" component={Payments} />
-            
-          </Switch>
-        </main>
+    <Router>
+      <div className="flex h-screen bg-gray-100">
+        {isAuthenticated && <Sidebar />}
+        <div className="flex-1 overflow-auto">
+          <Routes>
+            <Route path="/login" element={
+              !isAuthenticated ? 
+                <Login setIsAuthenticated={setIsAuthenticated} /> : 
+                <Navigate to="/dashboard" />
+            } />
+            <Route path="/dashboard" element={
+              isAuthenticated ? 
+                <Dashboard /> : 
+                <Navigate to="/login" />
+            } />
+            <Route path="/bookings" element={
+              isAuthenticated ? 
+                <Bookings /> : 
+                <Navigate to="/login" />
+            } />
+            <Route path="/inspections" element={
+              isAuthenticated ? 
+                <Inspections /> : 
+                <Navigate to="/login" />
+            } />
+            <Route path="/payments" element={
+              isAuthenticated ? 
+                <Payments /> : 
+                <Navigate to="/login" />
+            } />
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
 
