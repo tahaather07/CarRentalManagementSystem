@@ -19,9 +19,9 @@ function App() {
 
   return (
     <Router>
-      <div className="flex h-screen bg-gray-100">
+      <div className="flex min-h-screen bg-gray-100">
         {isAuthenticated && <Sidebar />}
-        <div className="flex-1 overflow-auto">
+        <div className={`flex-1 ${isAuthenticated ? 'md:ml-64' : ''} min-h-screen overflow-auto`}>
           <Routes>
             <Route path="/login" element={
               !isAuthenticated ? 
