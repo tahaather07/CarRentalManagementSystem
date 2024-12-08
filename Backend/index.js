@@ -10,7 +10,9 @@ const authController = require('./src/controllers/authController');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*', // Allow all origins
+}));
 app.use(express.json());
 
 // Connect to database
