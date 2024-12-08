@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { bookingsAPI } from '../services/api';
+import axios from 'axios';
 
 function InspectionForm({ booking, onSubmit, onCancel }) {
   const [formData, setFormData] = useState({
@@ -14,6 +15,26 @@ function InspectionForm({ booking, onSubmit, onCancel }) {
     notes: '',
     images: []
   });
+
+  const handleImageUpload = async (e) => {
+    const files = e.target.files;
+    const uploadedImageUrls = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const formData = new FormData();
+      formData.append('file', files[i]);
+      formData.append('upload_preset', 'carRentalPreset'); // Replace with your Cloudinary upload preset
+
+      try {
+        const response = await axios.post('https://api.cloudinary.com/v1_1/diwlpdzqh/image/upload', formData);
+        uploadedImageUrls.push(response.data.secure_url); // Get the URL of the uploaded image
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+
+    setFormData({ ...formData, images: uploadedImageUrls });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -100,22 +121,33 @@ function InspectionForm({ booking, onSubmit, onCancel }) {
               onChange={(e) => setFormData({...formData, notes: e.target.value})}
             />
           </div>
-        </div>
 
-        <div className="mt-4 flex justify-end space-x-2">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="px-4 py-2 border rounded-md hover:bg-gray-50"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Submit Inspection
-          </button>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images</label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="border rounded-md p-2"
+            />
+          </div>
+
+          <div className="mt-4 flex justify-end space-x-2">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-4 py-2 border rounded-md hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Submit Inspection
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -150,6 +182,23 @@ function InspectionList({ inspections }) {
               <p className="text-sm">{inspection.notes}</p>
             </div>
           </div>
+
+          {/* Display Images */}
+          {inspection.images.length > 0 && (
+            <div className="mt-4">
+              <h4 className="font-medium">Images</h4>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
+                {inspection.images.map((imageUrl, index) => (
+                  <img
+                    key={index}
+                    src={imageUrl}
+                    alt={`Inspection Image ${index + 1}`}
+                    className="w-full h-32 object-cover rounded-md" // Standard size for all images
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       ))}
     </div>
