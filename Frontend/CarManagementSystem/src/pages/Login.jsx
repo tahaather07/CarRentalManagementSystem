@@ -11,7 +11,7 @@ function Login({ setIsAuthenticated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/login', credentials);
+      const response = await axios.post('https://carrentalmanagementsystem.onrender.com/api/auth/login', credentials);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       setIsAuthenticated(true);
