@@ -92,7 +92,7 @@ const seedDatabase = async () => {
         returnBranch: branch._id,
         startDate: new Date('2024-03-20'),
         endDate: new Date('2024-03-23'),
-        status: 'confirmed',
+        status: 'pending',
         totalAmount: 225.00, // 3 days * $75
         paymentStatus: 'pending',
         paymentMethod: 'cash payment'
@@ -182,7 +182,7 @@ const seedDatabase = async () => {
         endDate: new Date('2024-03-27'),
         status: 'pending',
         totalAmount: 130.00, // 2 days * $65
-        paymentStatus: 'pending',
+        paymentStatus: 'paid',
         paymentMethod: 'credit card'
       },
       { upsert: true, new: true }

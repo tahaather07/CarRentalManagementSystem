@@ -155,7 +155,9 @@ const staffController = {
 
       // Update booking payment status
       booking.paymentStatus = 'paid';
+      booking.status='confirmed';
       await booking.save();
+
 
       // Send payment confirmation email
       try {

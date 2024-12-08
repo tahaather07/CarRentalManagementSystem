@@ -118,8 +118,8 @@ function PaymentHistory({ payments }) {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Method</th>
+
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Payment Status</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Booking Status</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Processed By</th>
           </tr>
         </thead>
@@ -135,17 +135,12 @@ function PaymentHistory({ payments }) {
               <td className="px-6 py-4 capitalize">
                 {getDisplayPaymentMethod(payment.paymentMethod)}
               </td>
-              <td className="px-6 py-4">
-                <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(payment.paymentIntent?.status)}`}>
-                  {payment.paymentIntent?.status || 'pending'}
-                </span>
-              </td>
+   
               <td className="px-6 py-4">
                 <span className={`px-2 py-1 rounded-full text-xs ${
-                  payment.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                  payment.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                  payment.status === 'active' ? 'bg-blue-100 text-blue-800' :
-                  payment.status === 'completed' ? 'bg-purple-100 text-purple-800' :
+                
+                  payment.status === 'pending' ? 'bg-blue-100 text-blue-800' :
+                  payment.status === 'completed' ? 'bg-green-100 text-green-800' :
                   'bg-yellow-100 text-yellow-800'
                 }`}>
                   {payment.status}
@@ -261,7 +256,8 @@ function Payments() {
             {selectedBooking && (
               <button
                 onClick={() => setShowForm(true)}
-                className="mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+                className={`mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 ${selectedBooking.paymentStatus === 'paid' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={selectedBooking.paymentStatus === 'paid'}
               >
                 Process Payment
               </button>
