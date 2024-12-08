@@ -131,6 +131,92 @@ const seedDatabase = async () => {
     console.log('Staff Branch ID:', staffUser.branch);
     console.log('Sample Inspection ID:', inspection._id);
 
+    // Create second sample car
+    const car2 = await Car.findOneAndUpdate(
+      { licensePlate: 'XYZ789' },
+      {
+        make: 'Honda',
+        model: 'Civic',
+        year: 2023,
+        category: category._id,
+        licensePlate: 'XYZ789',
+        branch: branch._id,
+        dailyRate: 65.00,
+        status: 'available',
+        features: ['Apple CarPlay', 'Lane Departure Warning', 'Keyless Entry'],
+        mileage: 8000,
+        transmission: 'automatic'
+      },
+      { upsert: true, new: true }
+    );
+
+    // Create second sample customer
+    const hashedPassword2 = await bcrypt.hash('customer456', 10);
+    const customer2 = await User.findOneAndUpdate(
+      { email: 'jane.smith@example.com' },
+      {
+        firstName: 'Jane',
+        lastName: 'Smith',
+        email: 'jane.smith@example.com',
+        password: hashedPassword2,
+        phoneNumber: '555-0125',
+        role: 'customer',
+        status: 'active'
+      },
+      { upsert: true, new: true }
+    );
+
+    // Create second sample booking
+    const booking2 = await Booking.findOneAndUpdate(
+      { 
+        customer: customer2._id,
+        car: car2._id,
+        startDate: new Date('2024-03-25')
+      },
+      {
+        customer: customer2._id,
+        car: car2._id,
+        pickupBranch: branch._id,
+        returnBranch: branch._id,
+        startDate: new Date('2024-03-25'),
+        endDate: new Date('2024-03-27'),
+        status: 'pending',
+        totalAmount: 130.00, // 2 days * $65
+        paymentStatus: 'pending',
+        paymentMethod: 'credit card'
+      },
+      { upsert: true, new: true }
+    );
+
+    // Create second sample inspection
+    const inspection2 = await Inspection.findOneAndUpdate(
+      {
+        booking: booking2._id,
+        type: 'pre-rental'
+      },
+      {
+        booking: booking2._id,
+        inspector: staffUser._id,
+        type: 'pre-rental',
+        condition: {
+          exterior: 'Excellent condition',
+          interior: 'Like new',
+          mileage: 8000,
+          fuelLevel: 1.0,
+          damages: []
+        },
+        notes: 'New vehicle inspection',
+        images: []
+      },
+      { upsert: true, new: true }
+    );
+
+    // Add additional console logs
+    console.log('Second Sample Booking ID:', booking2._id);
+    console.log('Second Sample Customer ID:', customer2._id);
+    console.log('Second Sample Car ID:', car2._id);
+    console.log('Second Sample Inspection ID:', inspection2._id);
+
   } catch (error) {
     console.error('Error seeding database:', error);
   }
