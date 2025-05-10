@@ -53,7 +53,7 @@ jobs:
 
     - name: Deploy MongoDB to Minikube
       run: |
-        kubectl apply -f mongodb-deployment.yamlx 
+        kubectl apply -f mongodb-deployment.yaml
         kubectl apply -f mongodb-service.yaml
 
     - name: Deploy Backend to Minikube
