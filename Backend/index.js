@@ -9,17 +9,33 @@ const authController = require('./src/controllers/authController');
 
 const app = express();
 
+// CORS configuration - Placed at the top
+const corsOptions = {
+  origin: ['http://localhost:5173', 'https://carrentalmanagementsystem.onrender.com', 'http://localhost'], // Allow your frontend origins
+  credentials: true, // Important for cookies, authorization headers
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use(cors(corsOptions));
+
+// Middleware to log outgoing headers
+app.use((req, res, next) => {
+  const originalSend = res.send;
+  res.send = function () {
+    console.log('Response Headers:', res.getHeaders());
+    originalSend.apply(res, arguments);
+  };
+  next();
+});
+
 // Middleware to log incoming requests
 app.use((req, res, next) => {
   console.log(`${req.method} request made to: ${req.url}`);
-  next(); // Pass control to the next middleware or route handler
+  console.log('Request Headers:', req.headers);
+  next();
 });
 
-// Middleware
-app.use(cors({
-  origin: '*', // Allow all origins
-  credentials: true
-}));
 app.use(express.json());
 
 // Connect to database

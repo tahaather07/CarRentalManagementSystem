@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./Frontend/CarManagementSystem
+      dockerfile: Dockerfile
+    ports:
+      - "80:80" # Exposes frontend on host port 80
+    networks:
+      - car-rental-network
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001" # Exposes backend on host port 3001
+    networks:
+      - car-rental-network
+    env_file:
+      - ./Backend/.env # Loads existing environment variables
+    environment:
+      # Override MONGODB_URI to use the service name from docker-compose
+      MONGODB_URI: mongodb://mongo_db_container:27017/carRentalSystem
+      PORT: 3001 # Ensure port is set, can also be in .env
+    depends_on:
+      - mongo_db_container
+    restart: unless-stopped
+
+  mongo_db_container:
+    image: mongo:latest # Using the latest official MongoDB image
+    ports:
+      - "27017:27017" # Exposes MongoDB on host port 27017 for direct access if needed
+    networks:
+      - car-rental-network
+    volumes:
+      - mongo-data:/data/db # Persists MongoDB data
+    restart: unless-stopped
+
+networks:
+  car-rental-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local 

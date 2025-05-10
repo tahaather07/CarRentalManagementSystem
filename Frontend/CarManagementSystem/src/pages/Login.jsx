@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 
 function Login({ setIsAuthenticated }) {
   const [credentials, setCredentials] = useState({
@@ -11,13 +11,12 @@ function Login({ setIsAuthenticated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(credentials);
-      const response = await axios.post('https://carrentalmanagementsystem.onrender.com/api/auth/login', credentials);
+      const response = await api.post('/auth/login', credentials);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       setIsAuthenticated(true);
     } catch (err) {
-      setError('Invalid credentials');
+      setError(err.response?.data?.error || 'Invalid credentials');
     }
   };
 
