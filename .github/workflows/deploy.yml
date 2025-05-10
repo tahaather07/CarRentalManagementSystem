@@ -54,6 +54,7 @@ jobs:
     - name: Deploy MongoDB to Minikube
       run: |
         kubectl apply -f mongodb-deployment.yaml
+        
         kubectl apply -f mongodb-service.yaml
 
     - name: Show Backend Deployment YAML content
@@ -63,6 +64,7 @@ jobs:
     - name: Deploy Backend to Minikube
       run: |
         kubectl apply -f backend-deployment.yaml
+        kubectl rollout restart deployment backend-deployment
         kubectl apply -f backend-service.yaml
 
     - name: Show Frontend Deployment YAML content
@@ -72,6 +74,7 @@ jobs:
     - name: Deploy Frontend to Minikube
       run: |
         kubectl apply -f frontend-deployment.yaml
+        kubectl rollout restart deployment frontend-deployment
         kubectl apply -f frontend-service.yaml 
 
         
