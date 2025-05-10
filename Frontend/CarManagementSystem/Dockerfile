@@ -7,6 +7,7 @@ COPY package-lock.json ./
 RUN npm install
 
 COPY .env ./
+RUN echo "--- Content of .env during Docker build ---" && cat .env && echo "-------------------------------------------"
 COPY . .
 
 RUN npm run build

@@ -34,7 +34,7 @@ jobs:
       run: |
         cd Frontend/CarManagementSystem
         echo "VITE_API_BASE_URL=http://${{ env.MINIKUBE_IP }}:30008/api" > .env
-        docker build -t tahaawan2/car-rental-frontend:latest .
+        docker build --no-cache -t tahaawan2/car-rental-frontend:latest .
     
 
     - name: Login to Docker Hub
