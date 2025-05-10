@@ -1,4 +1,7 @@
 FROM node:18-alpine AS build
+ARG VITE_API_BASE_URL_ARG
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL_ARG
+
 WORKDIR /app
 
 COPY package.json ./
@@ -6,8 +9,6 @@ COPY package-lock.json ./
 
 RUN npm install
 
-COPY .env ./
-RUN echo "--- Content of .env during Docker build ---" && cat .env && echo "-------------------------------------------"
 COPY . .
 
 RUN npm run build
