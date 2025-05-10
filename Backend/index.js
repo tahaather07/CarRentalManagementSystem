@@ -18,7 +18,7 @@ const corsOptions = {
   optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 app.use(cors(corsOptions));
-//comment for workflow test push
+
 // Middleware to log outgoing headers
 app.use((req, res, next) => {
   const originalSend = res.send;
