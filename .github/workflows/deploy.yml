@@ -32,7 +32,7 @@ jobs:
 
     - name: Build Frontend Docker image
       run: |
-        cd Frontend
+        cd Frontend/CarManagementSystem
         echo "VITE_API_BASE_URL=http://${{ env.MINIKUBE_IP }}:30008/api" > .env
         docker build -t tahaawan2/car-rental-frontend:latest .
     
