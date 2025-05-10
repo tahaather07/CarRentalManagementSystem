@@ -10,12 +10,15 @@ services:
       - car-rental-network
     depends_on:
       - backend
+    environment:
+      - VITE_API_BASE_URL=http://backend:3001/api
   backend:
     build:
       context: ./Backend
       dockerfile: Dockerfile
     ports:
       - "3001:3001" 
+      
     networks:
       - car-rental-network
     env_file:

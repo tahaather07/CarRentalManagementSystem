@@ -1,0 +1,64 @@
+name: Build and Deploy to Minikube
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker to use Minikube's environment
+      run: minikube docker-env | Invoke-Expression
+      shell: powershell
+
+    - name: Get Minikube IP
+      id: minikube_ip
+      run: |
+        $ip = minikube ip
+        echo "MINIKUBE_IP=$ip" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      shell: powershell
+
+    - name: Build Backend Docker image
+      run: |
+        cd Backend
+        docker build -t tahaawan2/car-rental-backend:latest .
+     
+
+    - name: Build Frontend Docker image
+      run: |
+        cd Frontend
+        echo "VITE_API_BASE_URL=http://${{ env.MINIKUBE_IP }}:30008/api" > .env
+        docker build -t tahaawan2/car-rental-frontend:latest .
+    
+
+    - name: Login to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Push Backend Docker image
+      run: docker push tahaawan2/car-rental-backend:latest
+     
+
+    - name: Push Frontend Docker image
+      run: docker push tahaawan2/car-rental-frontend:latest
+      
+
+    - name: Deploy MongoDB to Minikube
+      run: |
+        kubectl apply -f mongodb-deployment.yaml
+        kubectl apply -f mongodb-service.yaml
+
+    - name: Deploy Backend to Minikube
+      run: |
+        kubectl apply -f backend-deployment.yaml
+        kubectl apply -f backend-service.yaml
+
+    - name: Deploy Frontend to Minikube
+      run: |
+        kubectl apply -f frontend-deployment.yaml
+        kubectl apply -f frontend-service.yaml 
