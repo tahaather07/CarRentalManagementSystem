@@ -39,8 +39,12 @@ jobs:
 
     - name: Login to Docker Hub
       run: |
-        $env:DOCKER_HUB_TOKEN = '${{ secrets.DOCKER_PASSWORD }}'
-        $env:DOCKER_HUB_TOKEN | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        $username = 'YOUR_DOCKER_HUB_USERNAME_HERE' # !!! REPLACE THIS !!!
+        $token = 'YOUR_ACTUAL_ACCESS_TOKEN_HERE' # !!! REPLACE THIS !!!
+        $tempFile = [System.IO.Path]::GetTempFileName()
+        Set-Content -Path $tempFile -Value $token
+        docker login -u "$username" --password-stdin < $tempFile
+        Remove-Item -Path $tempFile -Force
       shell: powershell
 
     - name: Push Backend Docker image
