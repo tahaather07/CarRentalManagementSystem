@@ -17,6 +17,7 @@ spec:
       containers:
       - name: frontend
         image: tahaawan2/car-rental-frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80 
         env:
