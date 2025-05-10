@@ -43,7 +43,7 @@ jobs:
         $token = 'YOUR_ACTUAL_ACCESS_TOKEN_HERE' # !!! REPLACE THIS !!!
         $tempFile = [System.IO.Path]::GetTempFileName()
         Set-Content -Path $tempFile -Value $token
-        docker login -u "$username" --password-stdin < $tempFile
+        Get-Content -Path $tempFile | docker login -u "$username" --password-stdin
         Remove-Item -Path $tempFile -Force
       shell: powershell
 
@@ -57,7 +57,7 @@ jobs:
 
     - name: Deploy MongoDB to Minikube
       run: |
-        kubectl apply -f mongodb-deployment.yaml
+        kubectl apply -f mongodb-deployment.yamlx 
         kubectl apply -f mongodb-service.yaml
 
     - name: Deploy Backend to Minikube
