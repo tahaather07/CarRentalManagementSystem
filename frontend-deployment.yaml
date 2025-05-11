@@ -22,4 +22,8 @@ spec:
         - containerPort: 80 
         env:
         - name: VITE_API_BASE_URL
-          value: "http://backend-service:3001/api" 
+          value: "http://$(MINIKUBE_IP):30008/api" 
+        - name: MINIKUBE_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP 
