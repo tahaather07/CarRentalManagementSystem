@@ -1,6 +1,6 @@
 FROM node:18-alpine AS build
-# Remove the ARG and set the ENV directly for internal kubernetes communication
-ENV VITE_API_BASE_URL=http://backend-service:3001/api
+# Use a relative URL for API calls
+ENV VITE_API_BASE_URL=/api
 
 WORKDIR /app
 
