@@ -43,6 +43,9 @@ jobs:
       run: docker push tahaawan2/car-rental-frontend:latest
       
 
+    - name: Create scd-project namespace if it doesn't exist
+      run: kubectl create namespace scd-project --dry-run=client -o yaml | kubectl apply -f -
+
     - name: Deploy MongoDB to Minikube
       run: |
         kubectl apply -f mongodb-deployment.yaml
@@ -51,14 +54,14 @@ jobs:
     - name: Deploy Backend to Minikube
       run: |
         kubectl apply -f backend-deployment.yaml
-        kubectl rollout restart deployment backend-deployment
+        kubectl rollout restart deployment backend-deployment -n scd-project
         kubectl apply -f backend-service.yaml
 
 
     - name: Deploy Frontend to Minikube
       run: |
         kubectl apply -f frontend-deployment.yaml
-        kubectl rollout restart deployment frontend-deployment
+        kubectl rollout restart deployment frontend-deployment -n scd-project
         kubectl apply -f frontend-service.yaml 
 
         
