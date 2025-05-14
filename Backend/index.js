@@ -8,7 +8,6 @@ const authRoutes = require('./src/routes/authRoutes');
 const authController = require('./src/controllers/authController');
 
 const app = express();
-//for github action
 // CORS configuration - Placed at the top
 const corsOptions = {
   origin: ['http://localhost:5173', 'https://carrentalmanagementsystem.onrender.com', 'http://localhost'], // Allow your frontend origins
